@@ -5,6 +5,7 @@ from data import data as data_init
 from flask import Flask, render_template, request, url_for, redirect, flash, make_response
 from markupsafe import escape
 
+import time 
 
 d = data_init()
 app = Flask(__name__)
@@ -56,15 +57,18 @@ def index():
         status_name=stat['name'],
         status_desc=stat['desc'],
         status_color=stat['color'],
-        more_text=ot['more_text']
+        more_text=ot['more_text'],
+        last_update_time=d.data['last_update_time'],
     )
 
 
 @app.route('/style.css')
+@app.route('/style.css')
 def style_css():
     response = make_response(render_template(
         'style.css',
-        bg=d.data['other']['background'],
+        portrait_bg=d.data['other']['portrait_background'],
+        landscape_bg=d.data['other']['landscape_background'],
         alpha=d.data['other']['alpha']
     ))
     response.mimetype = 'text/css'
@@ -119,6 +123,7 @@ def set_normal():
     if secret == secret_real:
         d.dset('status', status)
         d.dset('app_name', app_name)
+        d.dset('last_update_time', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time())))
         u.info('set success')
         ret = {
             'success': True,

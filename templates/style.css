@@ -14,12 +14,20 @@ body, html {
 }
 
 body {
-    /* 背景图设置 */
-    background: url('{{ bg }}') no-repeat center center fixed;
+    /* 默认背景图设置 */
+    background: url('{{ portrait_bg }}') no-repeat center center fixed;
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* 根据屏幕方向设置不同的背景 */
+@media screen and (orientation: landscape) {
+    body {
+        background: url('{{ landscape_bg }}') no-repeat center center fixed;
+        background-size: cover;
+    }
 }
 
 .card {
@@ -31,7 +39,6 @@ body {
 }
 
 /* 以下为各种状态的颜色 */
-
 .sleeping {
     color: gray;
 }
